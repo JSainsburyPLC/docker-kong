@@ -10,7 +10,7 @@ services:
       - POSTGRES_USER=kong
       - POSTGRES_DB=kong
   kong:
-    image: mashape/kong:0.8.1
+    image: kong:0.9
     ports:
       - 8800:8000
       - 8801:8001
@@ -19,6 +19,7 @@ services:
       - postgres:kong-database
     environment:
       - DATABASE=postgres
+      - KONG_PG_HOST=postgres
     volumes:
       - ./config.docker/kong.yml:/etc/kong/kong.yml
     command: sh -c 'until nc -w 2 kong-database 5432 > /dev/null; do sleep 1; done; kong start && tail -f /usr/local/kong/logs/error.log'
